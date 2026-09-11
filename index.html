@@ -1,0 +1,2431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Control de Vehículos — Sociedad Rucalhue</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #f4f6f8;
+    color: #1f2937;
+}
+
+/* ====== CABECERA ====== */
+
+header {
+    background: #17365d;
+    color: white;
+    padding: 18px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+
+.logo h1 {
+    font-size: 22px;
+}
+
+.logo p {
+    font-size: 13px;
+    opacity: .85;
+    margin-top: 4px;
+}
+
+/* ====== MENU ====== */
+
+nav {
+    background: white;
+    display: flex;
+    gap: 5px;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    overflow-x: auto;
+}
+
+nav button {
+    border: none;
+    background: transparent;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+nav button:hover,
+nav button.active {
+    background: #e8eef6;
+    color: #17365d;
+    font-weight: bold;
+}
+
+/* ====== CONTENEDOR ====== */
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 25px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* ====== TITULOS ====== */
+
+.page-title {
+    margin-bottom: 20px;
+}
+
+.page-title h2 {
+    color: #17365d;
+    margin-bottom: 5px;
+}
+
+.page-title p {
+    color: #6b7280;
+}
+
+/* ====== TARJETAS ====== */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07);
+}
+
+.card .icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.card .number {
+    font-size: 30px;
+    font-weight: bold;
+    color: #17365d;
+}
+
+/* ====== SECCIONES ====== */
+
+.section {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.section-header h3 {
+    color: #17365d;
+}
+
+/* ====== BOTONES ====== */
+
+.btn {
+    border: none;
+    border-radius: 7px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: #17365d;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #102846;
+}
+
+.btn-success {
+    background: #198754;
+    color: white;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+/* ====== TABLAS ====== */
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #f1f5f9;
+    text-align: left;
+    padding: 12px;
+    font-size: 13px;
+    color: #475569;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+}
+
+tr:hover td {
+    background: #fafafa;
+}
+
+/* ====== FORMULARIOS ====== */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #374151;
+}
+
+input,
+select,
+textarea {
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 14px;
+    width: 100%;
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+/* ====== ESTADOS ====== */
+
+.badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.badge-green {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.badge-red {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-yellow {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-gray {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+/* ====== MODAL ====== */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    width: 100%;
+    max-width: 750px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close {
+    border: none;
+    background: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* ====== ALERTAS ====== */
+
+.alert {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.alert-warning {
+    background: #fff7ed;
+    color: #9a3412;
+}
+
+.alert-danger {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.alert-success {
+    background: #f0fdf4;
+    color: #166534;
+}
+
+/* ====== RESPONSIVE ====== */
+
+@media (max-width: 700px) {
+
+    header {
+        padding: 15px;
+    }
+
+    .logo h1 {
+        font-size: 18px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .section {
+        padding: 15px;
+    }
+
+    th,
+    td {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <h1>🚗 Control de Vehículos</h1>
+        <p>Sociedad Rucalhue</p>
+    </div>
+
+    <div>
+        <strong>Rucalhue</strong>
+    </div>
+
+</header>
+
+<nav>
+
+    <button class="active" onclick="showPage('inicio', this)">
+        🏠 Inicio
+    </button>
+
+    <button onclick="showPage('vehiculos', this)">
+        🚗 Vehículos
+    </button>
+
+    <button onclick="showPage('bitacora', this)">
+        📖 Bitácora
+    </button>
+
+    <button onclick="showPage('vencimientos', this)">
+        ⚠️ Vencimientos
+    </button>
+
+    <button onclick="showPage('mantenciones', this)">
+        🔧 Mantenciones
+    </button>
+
+    <button onclick="showPage('choferes', this)">
+        👷 Choferes
+    </button>
+
+</nav>
+
+
+<div class="container">
+
+<!-- ================================================= -->
+<!-- INICIO -->
+<!-- ================================================= -->
+
+<section id="inicio" class="page active">
+
+    <div class="page-title">
+        <h2>🏠 Inicio</h2>
+        <p>Resumen general de la flota de Sociedad Rucalhue</p>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="icon">🚗</div>
+            <h3>Total de vehículos</h3>
+            <div class="number" id="totalVehiculos">0</div>
+        </div>
+
+        <div class="card">
+            <div class="icon">🟢</div>
+            <h3>Vehículos activos</h3>
+            <div class="number" id="vehiculosActivos">0</div>
+        </div>
+
+        <div class="card">
+            <div class="icon">⚠️</div>
+            <h3>Alertas de documentos</h3>
+            <div class="number" id="alertasDocumentos">0</div>
+        </div>
+
+        <div class="card">
+            <div class="icon">🔧</div>
+            <h3>Mantenciones próximas</h3>
+            <div class="number" id="mantencionesProximas">0</div>
+        </div>
+
+    </div>
+
+    <div class="section">
+
+        <div class="section-header">
+            <h3>📖 Últimos registros de KM</h3>
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Vehículo</th>
+                        <th>Chofer</th>
+                        <th>KM final</th>
+                        <th>KM recorridos</th>
+                    </tr>
+                </thead>
+
+                <tbody id="ultimosKm">
+                    <tr>
+                        <td colspan="5">
+                            No existen registros todavía.
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- VEHICULOS -->
+<!-- ================================================= -->
+
+<section id="vehiculos" class="page">
+
+    <div class="page-title">
+
+        <h2>🚗 Vehículos</h2>
+
+        <p>
+            Administración de los vehículos pertenecientes a Sociedad Rucalhue
+        </p>
+
+    </div>
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h3>Listado de vehículos</h3>
+
+            <button class="btn btn-primary"
+                    onclick="abrirModalVehiculo()">
+                + Crear vehículo
+            </button>
+
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Patente</th>
+                        <th>Marca / Modelo</th>
+                        <th>Año</th>
+                        <th>KM actual</th>
+                        <th>Chofer</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="tablaVehiculos">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- BITACORA -->
+<!-- ================================================= -->
+
+<section id="bitacora" class="page">
+
+    <div class="page-title">
+
+        <h2>📖 Bitácora</h2>
+
+        <p>
+            Registro de kilómetros y movimientos de los vehículos
+        </p>
+
+    </div>
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h3>Registrar movimiento</h3>
+
+            <button class="btn btn-primary"
+                    onclick="abrirModalKm()">
+                + Registrar KM
+            </button>
+
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Vehículo</th>
+                        <th>Chofer</th>
+                        <th>KM inicial</th>
+                        <th>KM final</th>
+                        <th>KM recorridos</th>
+                        <th>Observaciones</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="tablaBitacora">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- VENCIMIENTOS -->
+<!-- ================================================= -->
+
+<section id="vencimientos" class="page">
+
+    <div class="page-title">
+
+        <h2>⚠️ Vencimientos</h2>
+
+        <p>
+            Control de documentos de los vehículos
+        </p>
+
+    </div>
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h3>Documentación</h3>
+
+            <button class="btn btn-primary"
+                    onclick="abrirModalDocumento()">
+                + Agregar documento
+            </button>
+
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Vehículo</th>
+                        <th>Documento</th>
+                        <th>Vencimiento</th>
+                        <th>Estado</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="tablaDocumentos">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- MANTENCIONES -->
+<!-- ================================================= -->
+
+<section id="mantenciones" class="page">
+
+    <div class="page-title">
+
+        <h2>🔧 Mantenciones</h2>
+
+        <p>
+            Control de mantenimiento de la flota
+        </p>
+
+    </div>
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h3>Historial de mantenciones</h3>
+
+            <button class="btn btn-primary"
+                    onclick="abrirModalMantencion()">
+                + Registrar mantención
+            </button>
+
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Vehículo</th>
+                        <th>Tipo</th>
+                        <th>KM</th>
+                        <th>Próxima mantención</th>
+                        <th>Observaciones</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="tablaMantenciones">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- CHOFERES -->
+<!-- ================================================= -->
+
+<section id="choferes" class="page">
+
+    <div class="page-title">
+
+        <h2>👷 Choferes</h2>
+
+        <p>
+            Administración de conductores
+        </p>
+
+    </div>
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h3>Conductores registrados</h3>
+
+            <button class="btn btn-primary"
+                    onclick="abrirModalChofer()">
+                + Crear chofer
+            </button>
+
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Nombre</th>
+                        <th>RUT</th>
+                        <th>Teléfono</th>
+                        <th>Vehículo asignado</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="tablaChoferes">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MODAL VEHICULO -->
+<!-- ================================================= -->
+
+<div id="modalVehiculo" class="modal">
+
+<div class="modal-content">
+
+    <div class="modal-header">
+
+        <h2>🚗 Crear vehículo</h2>
+
+        <button class="close"
+                onclick="cerrarModales()">
+            ×
+        </button>
+
+    </div>
+
+    <form id="formVehiculo">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Patente *</label>
+
+                <input
+                    type="text"
+                    id="patente"
+                    placeholder="Ej: AB1234"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Marca *</label>
+
+                <input
+                    type="text"
+                    id="marca"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Modelo *</label>
+
+                <input
+                    type="text"
+                    id="modelo"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Año</label>
+
+                <input
+                    type="number"
+                    id="anio"
+                    min="1900"
+                    max="2100">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>KM actual</label>
+
+                <input
+                    type="number"
+                    id="kmActual"
+                    value="0"
+                    min="0">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Estado</label>
+
+                <select id="estadoVehiculo">
+
+                    <option value="Activo">
+                        Activo
+                    </option>
+
+                    <option value="Inactivo">
+                        Inactivo
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="cerrarModales()">
+                Cancelar
+            </button>
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+                Guardar vehículo
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MODAL KM -->
+<!-- ================================================= -->
+
+<div id="modalKm" class="modal">
+
+<div class="modal-content">
+
+    <div class="modal-header">
+
+        <h2>📖 Registrar KM</h2>
+
+        <button class="close"
+                onclick="cerrarModales()">
+            ×
+        </button>
+
+    </div>
+
+    <form id="formKm">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Fecha *</label>
+
+                <input
+                    type="date"
+                    id="fechaKm"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Vehículo *</label>
+
+                <select id="vehiculoKm"
+                        required>
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>KM inicial *</label>
+
+                <input
+                    type="number"
+                    id="kmInicial"
+                    min="0"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>KM final *</label>
+
+                <input
+                    type="number"
+                    id="kmFinal"
+                    min="0"
+                    required>
+
+            </div>
+
+            <div class="form-group full">
+
+                <label>Observaciones</label>
+
+                <textarea
+                    id="observacionesKm"
+                    placeholder="Detalle del recorrido...">
+                </textarea>
+
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="cerrarModales()">
+                Cancelar
+            </button>
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+                Guardar registro
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MODAL DOCUMENTO -->
+<!-- ================================================= -->
+
+<div id="modalDocumento" class="modal">
+
+<div class="modal-content">
+
+    <div class="modal-header">
+
+        <h2>⚠️ Agregar documento</h2>
+
+        <button class="close"
+                onclick="cerrarModales()">
+            ×
+        </button>
+
+    </div>
+
+    <form id="formDocumento">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Vehículo *</label>
+
+                <select id="vehiculoDocumento"
+                        required>
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Documento *</label>
+
+                <select id="tipoDocumento"
+                        required>
+
+                    <option value="Revisión técnica">
+                        Revisión técnica
+                    </option>
+
+                    <option value="Permiso de circulación">
+                        Permiso de circulación
+                    </option>
+
+                    <option value="SOAP">
+                        SOAP
+                    </option>
+
+                    <option value="Seguro">
+                        Seguro
+                    </option>
+
+                    <option value="Otro">
+                        Otro
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Fecha de vencimiento *</label>
+
+                <input
+                    type="date"
+                    id="fechaVencimiento"
+                    required>
+
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="cerrarModales()">
+                Cancelar
+            </button>
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+                Guardar documento
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MODAL MANTENCION -->
+<!-- ================================================= -->
+
+<div id="modalMantencion" class="modal">
+
+<div class="modal-content">
+
+    <div class="modal-header">
+
+        <h2>🔧 Registrar mantención</h2>
+
+        <button class="close"
+                onclick="cerrarModales()">
+            ×
+        </button>
+
+    </div>
+
+    <form id="formMantencion">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Fecha *</label>
+
+                <input
+                    type="date"
+                    id="fechaMantencion"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Vehículo *</label>
+
+                <select id="vehiculoMantencion"
+                        required>
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Tipo de mantención *</label>
+
+                <input
+                    type="text"
+                    id="tipoMantencion"
+                    placeholder="Ej: Cambio de aceite"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>KM actual *</label>
+
+                <input
+                    type="number"
+                    id="kmMantencion"
+                    min="0"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Próxima mantención en KM</label>
+
+                <input
+                    type="number"
+                    id="proximaMantencion"
+                    min="0">
+
+            </div>
+
+            <div class="form-group full">
+
+                <label>Observaciones</label>
+
+                <textarea
+                    id="observacionesMantencion">
+                </textarea>
+
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="cerrarModales()">
+                Cancelar
+            </button>
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+                Guardar mantención
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MODAL CHOFER -->
+<!-- ================================================= -->
+
+<div id="modalChofer" class="modal">
+
+<div class="modal-content">
+
+    <div class="modal-header">
+
+        <h2>👷 Crear chofer</h2>
+
+        <button class="close"
+                onclick="cerrarModales()">
+            ×
+        </button>
+
+    </div>
+
+    <form id="formChofer">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Nombre completo *</label>
+
+                <input
+                    type="text"
+                    id="nombreChofer"
+                    required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>RUT</label>
+
+                <input
+                    type="text"
+                    id="rutChofer"
+                    placeholder="12.345.678-9">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Teléfono</label>
+
+                <input
+                    type="text"
+                    id="telefonoChofer">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Vehículo asignado</label>
+
+                <select id="vehiculoChofer">
+
+                    <option value="">
+                        Sin asignar
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="cerrarModales()">
+                Cancelar
+            </button>
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+                Guardar chofer
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   DATOS
+===================================================== */
+
+let vehiculos =
+    JSON.parse(localStorage.getItem("rucalhue_vehiculos")) || [];
+
+let bitacora =
+    JSON.parse(localStorage.getItem("rucalhue_bitacora")) || [];
+
+let documentos =
+    JSON.parse(localStorage.getItem("rucalhue_documentos")) || [];
+
+let mantenciones =
+    JSON.parse(localStorage.getItem("rucalhue_mantenciones")) || [];
+
+let choferes =
+    JSON.parse(localStorage.getItem("rucalhue_choferes")) || [];
+
+
+/* =====================================================
+   NAVEGACION
+===================================================== */
+
+function showPage(id, button) {
+
+    document.querySelectorAll(".page")
+        .forEach(page => page.classList.remove("active"));
+
+    document.getElementById(id)
+        .classList.add("active");
+
+    document.querySelectorAll("nav button")
+        .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    actualizarTodo();
+}
+
+
+/* =====================================================
+   MODALES
+===================================================== */
+
+function cerrarModales() {
+
+    document.querySelectorAll(".modal")
+        .forEach(modal => modal.classList.remove("show"));
+
+}
+
+function abrirModalVehiculo() {
+
+    document.getElementById("formVehiculo").reset();
+
+    document.getElementById("modalVehiculo")
+        .classList.add("show");
+
+}
+
+function abrirModalKm() {
+
+    actualizarSelects();
+
+    document.getElementById("formKm").reset();
+
+    document.getElementById("fechaKm").value =
+        new Date().toISOString().split("T")[0];
+
+    document.getElementById("modalKm")
+        .classList.add("show");
+
+}
+
+function abrirModalDocumento() {
+
+    actualizarSelects();
+
+    document.getElementById("formDocumento").reset();
+
+    document.getElementById("modalDocumento")
+        .classList.add("show");
+
+}
+
+function abrirModalMantencion() {
+
+    actualizarSelects();
+
+    document.getElementById("formMantencion").reset();
+
+    document.getElementById("fechaMantencion").value =
+        new Date().toISOString().split("T")[0];
+
+    document.getElementById("modalMantencion")
+        .classList.add("show");
+
+}
+
+function abrirModalChofer() {
+
+    actualizarSelects();
+
+    document.getElementById("formChofer").reset();
+
+    document.getElementById("modalChofer")
+        .classList.add("show");
+
+}
+
+
+/* =====================================================
+   GUARDAR VEHICULO
+===================================================== */
+
+document.getElementById("formVehiculo")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const vehiculo = {
+
+        id: Date.now(),
+
+        empresa: "Sociedad Rucalhue",
+
+        patente:
+            document.getElementById("patente").value
+            .trim()
+            .toUpperCase(),
+
+        marca:
+            document.getElementById("marca").value.trim(),
+
+        modelo:
+            document.getElementById("modelo").value.trim(),
+
+        anio:
+            document.getElementById("anio").value,
+
+        km:
+            Number(document.getElementById("kmActual").value) || 0,
+
+        estado:
+            document.getElementById("estadoVehiculo").value,
+
+        chofer: ""
+
+    };
+
+    vehiculos.push(vehiculo);
+
+    guardarDatos();
+
+    cerrarModales();
+
+    actualizarTodo();
+
+    alert("Vehículo guardado correctamente.");
+
+});
+
+
+/* =====================================================
+   GUARDAR BITACORA
+===================================================== */
+
+document.getElementById("formKm")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const vehiculoId =
+        Number(document.getElementById("vehiculoKm").value);
+
+    const vehiculo =
+        vehiculos.find(v => v.id === vehiculoId);
+
+    if (!vehiculo) {
+
+        alert("Selecciona un vehículo.");
+
+        return;
+
+    }
+
+    const inicial =
+        Number(document.getElementById("kmInicial").value);
+
+    const final =
+        Number(document.getElementById("kmFinal").value);
+
+    if (final < inicial) {
+
+        alert("El KM final no puede ser menor que el KM inicial.");
+
+        return;
+
+    }
+
+    const registro = {
+
+        id: Date.now(),
+
+        fecha:
+            document.getElementById("fechaKm").value,
+
+        vehiculoId: vehiculoId,
+
+        patente: vehiculo.patente,
+
+        chofer:
+            vehiculo.chofer || "",
+
+        kmInicial: inicial,
+
+        kmFinal: final,
+
+        kmRecorridos: final - inicial,
+
+        observaciones:
+            document.getElementById("observacionesKm").value.trim()
+
+    };
+
+    bitacora.push(registro);
+
+    vehiculo.km = final;
+
+    guardarDatos();
+
+    cerrarModales();
+
+    actualizarTodo();
+
+    alert("Registro de KM guardado correctamente.");
+
+});
+
+
+/* =====================================================
+   DOCUMENTOS
+===================================================== */
+
+document.getElementById("formDocumento")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const vehiculoId =
+        Number(document.getElementById("vehiculoDocumento").value);
+
+    const vehiculo =
+        vehiculos.find(v => v.id === vehiculoId);
+
+    if (!vehiculo) {
+
+        alert("Selecciona un vehículo.");
+
+        return;
+
+    }
+
+    documentos.push({
+
+        id: Date.now(),
+
+        vehiculoId: vehiculoId,
+
+        patente: vehiculo.patente,
+
+        tipo:
+            document.getElementById("tipoDocumento").value,
+
+        vencimiento:
+            document.getElementById("fechaVencimiento").value
+
+    });
+
+    guardarDatos();
+
+    cerrarModales();
+
+    actualizarTodo();
+
+    alert("Documento guardado correctamente.");
+
+});
+
+
+/* =====================================================
+   MANTENCIONES
+===================================================== */
+
+document.getElementById("formMantencion")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const vehiculoId =
+        Number(document.getElementById("vehiculoMantencion").value);
+
+    const vehiculo =
+        vehiculos.find(v => v.id === vehiculoId);
+
+    if (!vehiculo) {
+
+        alert("Selecciona un vehículo.");
+
+        return;
+
+    }
+
+    mantenciones.push({
+
+        id: Date.now(),
+
+        fecha:
+            document.getElementById("fechaMantencion").value,
+
+        vehiculoId: vehiculoId,
+
+        patente: vehiculo.patente,
+
+        tipo:
+            document.getElementById("tipoMantencion").value,
+
+        km:
+            Number(document.getElementById("kmMantencion").value),
+
+        proxima:
+            Number(document.getElementById("proximaMantencion").value) || 0,
+
+        observaciones:
+            document.getElementById("observacionesMantencion").value
+
+    });
+
+    guardarDatos();
+
+    cerrarModales();
+
+    actualizarTodo();
+
+    alert("Mantención registrada correctamente.");
+
+});
+
+
+/* =====================================================
+   CHOFERES
+===================================================== */
+
+document.getElementById("formChofer")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const vehiculoId =
+        Number(document.getElementById("vehiculoChofer").value) || null;
+
+    const vehiculo =
+        vehiculos.find(v => v.id === vehiculoId);
+
+    const chofer = {
+
+        id: Date.now(),
+
+        nombre:
+            document.getElementById("nombreChofer").value.trim(),
+
+        rut:
+            document.getElementById("rutChofer").value.trim(),
+
+        telefono:
+            document.getElementById("telefonoChofer").value.trim(),
+
+        vehiculoId: vehiculoId,
+
+        patente:
+            vehiculo ? vehiculo.patente : ""
+
+    };
+
+    choferes.push(chofer);
+
+    if (vehiculo) {
+
+        vehiculo.chofer = chofer.nombre;
+
+    }
+
+    guardarDatos();
+
+    cerrarModales();
+
+    actualizarTodo();
+
+    alert("Chofer guardado correctamente.");
+
+});
+
+
+/* =====================================================
+   ACTUALIZAR SELECTS
+===================================================== */
+
+function actualizarSelects() {
+
+    const selects = [
+
+        "vehiculoKm",
+        "vehiculoDocumento",
+        "vehiculoMantencion",
+        "vehiculoChofer"
+
+    ];
+
+    selects.forEach(id => {
+
+        const select = document.getElementById(id);
+
+        if (!select) return;
+
+        const valorActual = select.value;
+
+        if (id === "vehiculoChofer") {
+
+            select.innerHTML =
+                '<option value="">Sin asignar</option>';
+
+        } else {
+
+            select.innerHTML =
+                '<option value="">Seleccione vehículo</option>';
+
+        }
+
+        vehiculos.forEach(v => {
+
+            const option =
+                document.createElement("option");
+
+            option.value = v.id;
+
+            option.textContent =
+                `${v.patente} — ${v.marca} ${v.modelo}`;
+
+            select.appendChild(option);
+
+        });
+
+        if (valorActual) {
+
+            select.value = valorActual;
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   TABLA VEHICULOS
+===================================================== */
+
+function actualizarVehiculos() {
+
+    const tbody =
+        document.getElementById("tablaVehiculos");
+
+    tbody.innerHTML = "";
+
+    if (vehiculos.length === 0) {
+
+        tbody.innerHTML =
+            '<tr><td colspan="7">No hay vehículos registrados.</td></tr>';
+
+        return;
+
+    }
+
+    vehiculos.forEach(v => {
+
+        const tr =
+            document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>
+                <strong>${v.patente}</strong>
+            </td>
+
+            <td>
+                ${v.marca} ${v.modelo}
+            </td>
+
+            <td>
+                ${v.anio || "-"}
+            </td>
+
+            <td>
+                ${Number(v.km).toLocaleString("es-CL")} km
+            </td>
+
+            <td>
+                ${v.chofer || "Sin asignar"}
+            </td>
+
+            <td>
+
+                <span class="badge ${
+                    v.estado === "Activo"
+                    ? "badge-green"
+                    : "badge-gray"
+                }">
+
+                    ${v.estado}
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <button
+                    class="btn btn-danger"
+                    onclick="eliminarVehiculo(${v.id})">
+
+                    Eliminar
+
+                </button>
+
+            </td>
+
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+
+/* =====================================================
+   TABLA BITACORA
+===================================================== */
+
+function actualizarBitacora() {
+
+    const tbody =
+        document.getElementById("tablaBitacora");
+
+    tbody.innerHTML = "";
+
+    if (bitacora.length === 0) {
+
+        tbody.innerHTML =
+            '<tr><td colspan="7">No existen registros.</td></tr>';
+
+        return;
+
+    }
+
+    [...bitacora]
+    .reverse()
+    .forEach(r => {
+
+        const tr =
+            document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>${formatearFecha(r.fecha)}</td>
+
+            <td>
+                <strong>${r.patente}</strong>
+            </td>
+
+            <td>
+                ${r.chofer || "-"}
+            </td>
+
+            <td>
+                ${Number(r.kmInicial).toLocaleString("es-CL")}
+            </td>
+
+            <td>
+                ${Number(r.kmFinal).toLocaleString("es-CL")}
+            </td>
+
+            <td>
+                <strong>
+                ${Number(r.kmRecorridos).toLocaleString("es-CL")}
+                </strong>
+            </td>
+
+            <td>
+                ${r.observaciones || "-"}
+            </td>
+
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+
+/* =====================================================
+   TABLA DOCUMENTOS
+===================================================== */
+
+function actualizarDocumentos() {
+
+    const tbody =
+        document.getElementById("tablaDocumentos");
+
+    tbody.innerHTML = "";
+
+    if (documentos.length === 0) {
+
+        tbody.innerHTML =
+            '<tr><td colspan="4">No hay documentos registrados.</td></tr>';
+
+        return;
+
+    }
+
+    documentos.forEach(d => {
+
+        const estado =
+            estadoDocumento(d.vencimiento);
+
+        const tr =
+            document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>
+                <strong>${d.patente}</strong>
+            </td>
+
+            <td>
+                ${d.tipo}
+            </td>
+
+            <td>
+                ${formatearFecha(d.vencimiento)}
+            </td>
+
+            <td>
+                <span class="badge ${estado.clase}">
+                    ${estado.texto}
+                </span>
+            </td>
+
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+
+/* =====================================================
+   TABLA MANTENCIONES
+===================================================== */
+
+function actualizarMantenciones() {
+
+    const tbody =
+        document.getElementById("tablaMantenciones");
+
+    tbody.innerHTML = "";
+
+    if (mantenciones.length === 0) {
+
+        tbody.innerHTML =
+            '<tr><td colspan="6">No hay mantenciones registradas.</td></tr>';
+
+        return;
+
+    }
+
+    [...mantenciones]
+    .reverse()
+    .forEach(m => {
+
+        const tr =
+            document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>
+                ${formatearFecha(m.fecha)}
+            </td>
+
+            <td>
+                <strong>${m.patente}</strong>
+            </td>
+
+            <td>
+                ${m.tipo}
+            </td>
+
+            <td>
+                ${Number(m.km).toLocaleString("es-CL")}
+            </td>
+
+            <td>
+                ${
+                    m.proxima
+                    ? Number(m.proxima).toLocaleString("es-CL") + " km"
+                    : "-"
+                }
+            </td>
+
+            <td>
+                ${m.observaciones || "-"}
+            </td>
+
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+
+/* =====================================================
+   TABLA CHOFERES
+===================================================== */
+
+function actualizarChoferes() {
+
+    const tbody =
+        document.getElementById("tablaChoferes");
+
+    tbody.innerHTML = "";
+
+    if (choferes.length === 0) {
+
+        tbody.innerHTML =
+            '<tr><td colspan="4">No hay choferes registrados.</td></tr>';
+
+        return;
+
+    }
+
+    choferes.forEach(c => {
+
+        const tr =
+            document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>
+                <strong>${c.nombre}</strong>
+            </td>
+
+            <td>
+                ${c.rut || "-"}
+            </td>
+
+            <td>
+                ${c.telefono || "-"}
+            </td>
+
+            <td>
+                ${c.patente || "Sin asignar"}
+            </td>
+
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function actualizarDashboard() {
+
+    document.getElementById("totalVehiculos")
+        .textContent = vehiculos.length;
+
+    document.getElementById("vehiculosActivos")
+        .textContent =
+        vehiculos.filter(v => v.estado === "Activo").length;
+
+    const alertas =
+        documentos.filter(d => {
+
+            const dias =
+                diferenciaDias(d.vencimiento);
+
+            return dias <= 30;
+
+        }).length;
+
+    document.getElementById("alertasDocumentos")
+        .textContent = alertas;
+
+    const proximas =
+        mantenciones.filter(m => {
+
+            if (!m.proxima) return false;
+
+            const vehiculo =
+                vehiculos.find(v => v.id === m.vehiculoId);
+
+            if (!vehiculo) return false;
+
+            return vehiculo.km >= m.proxima - 1000;
+
+        }).length;
+
+    document.getElementById("mantencionesProximas")
+        .textContent = proximas;
+
+    actualizarUltimosKm();
+
+}
+
+
+/* =====================================================
+   ULTIMOS KM
+===================================================== */
+
+function actualizarUltimosKm() {
+
+    const tbody =
+        document.getElementById("ultimosKm");
+
+    tbody.innerHTML = "";
+
+    const registros =
+        [...bitacora]
+        .sort((a,b) =>
+            new Date(b.fecha) - new Date(a.fecha)
+        )
+        .slice(0,5);
+
+    if (registros.length === 0) {
+
+        tbody.innerHTML =
+            '<tr><td colspan="5">No existen registros todavía.</td></tr>';
+
+        return;
+
+    }
+
+    registros.forEach(r => {
+
+        const tr =
+            document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>
+                ${formatearFecha(r.fecha)}
+            </td>
+
+            <td>
+                <strong>${r.patente}</strong>
+            </td>
+
+            <td>
+                ${r.chofer || "-"}
+            </td>
+
+            <td>
+                ${Number(r.kmFinal).toLocaleString("es-CL")}
+            </td>
+
+            <td>
+                ${Number(r.kmRecorridos).toLocaleString("es-CL")}
+            </td>
+
+        `;
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+
+/* =====================================================
+   ELIMINAR VEHICULO
+===================================================== */
+
+function eliminarVehiculo(id) {
+
+    const vehiculo =
+        vehiculos.find(v => v.id === id);
+
+    if (!vehiculo) return;
+
+    const confirmar =
+        confirm(
+            `¿Eliminar el vehículo ${vehiculo.patente}?`
+        );
+
+    if (!confirmar) return;
+
+    vehiculos =
+        vehiculos.filter(v => v.id !== id);
+
+    guardarDatos();
+
+    actualizarTodo();
+
+}
+
+
+/* =====================================================
+   ESTADO DOCUMENTO
+===================================================== */
+
+function estadoDocumento(fecha) {
+
+    const dias =
+        diferenciaDias(fecha);
+
+    if (dias < 0) {
+
+        return {
+            texto: "Vencido",
+            clase: "badge-red"
+        };
+
+    }
+
+    if (dias <= 30) {
+
+        return {
+            texto: `Vence en ${dias} días`,
+            clase: "badge-yellow"
+        };
+
+    }
+
+    return {
+
+        texto: "Vigente",
+        clase: "badge-green"
+
+    };
+
+}
+
+
+/* =====================================================
+   UTILIDADES
+===================================================== */
+
+function diferenciaDias(fecha) {
+
+    const hoy =
+        new Date();
+
+    hoy.setHours(0,0,0,0);
+
+    const vencimiento =
+        new Date(fecha + "T00:00:00");
+
+    return Math.ceil(
+        (vencimiento - hoy) /
+        (1000 * 60 * 60 * 24)
+    );
+
+}
+
+
+function formatearFecha(fecha) {
+
+    if (!fecha) return "-";
+
+    const partes =
+        fecha.split("-");
+
+    if (partes.length !== 3)
+        return fecha;
+
+    return `${partes[2]}-${partes[1]}-${partes[0]}`;
+
+}
+
+
+/* =====================================================
+   GUARDAR DATOS
+===================================================== */
+
+function guardarDatos() {
+
+    localStorage.setItem(
+        "rucalhue_vehiculos",
+        JSON.stringify(vehiculos)
+    );
+
+    localStorage.setItem(
+        "rucalhue_bitacora",
+        JSON.stringify(bitacora)
+    );
+
+    localStorage.setItem(
+        "rucalhue_documentos",
+        JSON.stringify(documentos)
+    );
+
+    localStorage.setItem(
+        "rucalhue_mantenciones",
+        JSON.stringify(mantenciones)
+    );
+
+    localStorage.setItem(
+        "rucalhue_choferes",
+        JSON.stringify(choferes)
+    );
+
+}
+
+
+/* =====================================================
+   ACTUALIZAR TODO
+===================================================== */
+
+function actualizarTodo() {
+
+    actualizarSelects();
+
+    actualizarVehiculos();
+
+    actualizarBitacora();
+
+    actualizarDocumentos();
+
+    actualizarMantenciones();
+
+    actualizarChoferes();
+
+    actualizarDashboard();
+
+}
+
+
+/* =====================================================
+   CERRAR MODAL AL HACER CLICK AFUERA
+===================================================== */
+
+window.addEventListener("click", function(e) {
+
+    if (e.target.classList.contains("modal")) {
+
+        e.target.classList.remove("show");
+
+    }
+
+});
+
+
+/* =====================================================
+   INICIO
+===================================================== */
+
+actualizarTodo();
+
+</script>
+
+</body>
+</html>
